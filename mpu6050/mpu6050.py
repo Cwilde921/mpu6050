@@ -57,10 +57,13 @@ class mpu6050:
         self.address = address
         self.bus = smbus.SMBus(bus)
         # Wake up the MPU-6050 since it starts in sleep mode
-        self.bus.write_byte_data(self.address, self.PWR_MGMT_1, 0x00)
+        self.bus.write_byte_data(self.address, self.PWR_MGMT_1, 0x01)
+        
+    def __del__(self):
+        # turn off PMU-6050
+        self.bus.wryte_byte_data(self.address, self.PWR_MGMT_1, 0x00)
 
     # I2C communication methods
-
     def read_i2c_word(self, register):
         """Read two i2c registers and combine them.
 
